@@ -1,20 +1,25 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Settings2 } from "lucide-react";
 import { NavBar } from "@/components/ls/NavBar";
 import { Footer } from "@/components/ls/Footer";
 import { Button } from "@/components/ls/Button";
+import { SEO } from "@/components/ls/SEO";
 import { openPreferences } from "@/lib/consent";
 
 const Privacy = () => {
   const { t, i18n } = useTranslation();
+  const isEn = i18n.language?.startsWith("en");
+  const path = isEn ? "/privacy" : "/privacidade";
 
-  useEffect(() => {
-    document.title = t("privacy.meta_title");
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", t("privacy.meta_description"));
-  }, [t, i18n.language]);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: t("privacy.meta_title"),
+    description: t("privacy.meta_description"),
+    inLanguage: isEn ? "en" : "pt-BR",
+    url: `https://leadseller.com.br${path}`,
+  };
 
   const sections = t("privacy.sections", { returnObjects: true }) as { title: string; body: string }[];
   const cookies = t("privacy.cookie_table.rows", { returnObjects: true }) as {
@@ -23,6 +28,14 @@ const Privacy = () => {
 
   return (
     <div className="min-h-screen bg-surface">
+      <SEO
+        path={path}
+        ptPath="/privacidade"
+        enPath="/privacy"
+        title={t("privacy.meta_title")}
+        description={t("privacy.meta_description")}
+        jsonLd={jsonLd}
+      />
       <NavBar onOpenDemo={() => { /* not used here */ }} />
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-20">
         <Link
