@@ -8,6 +8,7 @@ import { FunnelSection } from "@/components/ls/sections/FunnelSection";
 import { AdvantagesSection } from "@/components/ls/sections/AdvantagesSection";
 import { FinalCTASection } from "@/components/ls/sections/FinalCTASection";
 import { Footer } from "@/components/ls/Footer";
+import { CookieConsent } from "@/components/ls/CookieConsent";
 
 const Index = () => {
   const [demoOpen, setDemoOpen] = useState(false);
@@ -26,6 +27,7 @@ const Index = () => {
       </main>
       <Footer />
       <SchedulingModal open={demoOpen} onOpenChange={setDemoOpen} />
+      <CookieConsent />
     </div>
   );
 };

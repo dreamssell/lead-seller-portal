@@ -88,7 +88,7 @@
     "button": "Agendar Demo Agora"
   },
   "footer": {
-    "tagline": "Inteligência autônoma para vendas exigentes.",
+    "tagline": "Inteligência autônoma para vendas com excelência.",
     "rights": "© 2025 Lead Seller. Todos os direitos reservados."
   },
   "modal": {
@@ -113,5 +113,14 @@
     "validation_required": "Campo obrigatório",
     "validation_email": "E-mail inválido"
   },
-  "lang": { "pt": "PT", "en": "EN" }
+  "lang": { "pt": "PT", "en": "EN" },
+  "cookies": {
+    "kicker": "LGPD · Privacidade",
+    "title": "Sua privacidade é prioridade",
+    "description": "Usamos cookies essenciais para operação e cookies analíticos para melhorar sua experiência. Você pode aceitar todos ou manter apenas os essenciais. Saiba mais em nossa",
+    "policy_link": "Política de Privacidade",
+    "accept_all": "Aceitar todos",
+    "essential_only": "Apenas essenciais",
+    "close": "Fechar"
+  }
 }

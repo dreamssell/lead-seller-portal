@@ -4,7 +4,7 @@ import { Button } from "@/components/ls/Button";
 import { LanguageSwitcher } from "@/components/ls/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 
-const AUTH_URL = "https://auth.leadseller.com.br/login";
+const AUTH_URL = "https://auth.leadseller.com.br";
 
 interface NavBarProps {
   onOpenDemo: () => void;
