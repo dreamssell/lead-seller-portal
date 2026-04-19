@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Cookie, X } from "lucide-react";
+import { Cookie, Settings2, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ls/Button";
 import { cn } from "@/lib/utils";
-
-const STORAGE_KEY = "leadseller_lgpd_consent";
-
-type ConsentValue = "accepted" | "essential" | null;
+import { acceptAll, rejectNonEssential, hasDecided, openPreferences } from "@/lib/consent";
 
 export const CookieConsent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as ConsentValue;
-    if (!stored) {
+    if (!hasDecided()) {
       const id = window.setTimeout(() => setVisible(true), 600);
       return () => window.clearTimeout(id);
     }
   }, []);
 
-  const persist = (value: Exclude<ConsentValue, null>) => {
-    localStorage.setItem(STORAGE_KEY, value);
-    localStorage.setItem(`${STORAGE_KEY}_at`, new Date().toISOString());
+  if (!visible) return null;
+
+  const close = (action: "accept" | "essential") => {
+    if (action === "accept") acceptAll(); else rejectNonEssential();
     setVisible(false);
   };
 
-  if (!visible) return null;
+  const privacyHref = i18n.language.startsWith("en") ? "/privacy" : "/privacidade";
 
   return (
     <div
@@ -40,7 +38,7 @@ export const CookieConsent = () => {
     >
       <div className="relative rounded-2xl border border-navy/10 bg-white/95 backdrop-blur-xl shadow-navy-soft p-5 sm:p-6">
         <button
-          onClick={() => persist("essential")}
+          onClick={() => close("essential")}
           aria-label={t("cookies.close")}
           className="absolute right-3 top-3 rounded-full p-1.5 text-navy/40 hover:text-navy hover:bg-navy/5 transition-colors"
         >
@@ -58,22 +56,30 @@ export const CookieConsent = () => {
             <h3 className="text-sm font-extrabold text-navy">{t("cookies.title")}</h3>
             <p className="mt-1.5 text-xs leading-relaxed text-navy/65">
               {t("cookies.description")}{" "}
-              <a
-                href="/privacidade"
+              <Link
+                to={privacyHref}
                 className="font-semibold text-navy underline decoration-cyan/60 underline-offset-2 hover:decoration-cyan"
               >
                 {t("cookies.policy_link")}
-              </a>
+              </Link>
               .
             </p>
           </div>
         </div>
 
         <div className="mt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
-          <Button variant="secondary" size="sm" onClick={() => persist("essential")}>
+          <button
+            type="button"
+            onClick={() => { setVisible(false); openPreferences(); }}
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy/60 hover:text-cyan transition-colors px-2 py-2"
+          >
+            <Settings2 className="size-3.5" />
+            {t("cookies.preferences")}
+          </button>
+          <Button variant="secondary" size="sm" onClick={() => close("essential")}>
             {t("cookies.essential_only")}
           </Button>
-          <Button variant="primary" size="sm" onClick={() => persist("accepted")}>
+          <Button variant="primary" size="sm" onClick={() => close("accept")}>
             {t("cookies.accept_all")}
           </Button>
         </div>
