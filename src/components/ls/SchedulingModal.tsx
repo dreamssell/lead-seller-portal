@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { track } from "@/lib/analytics";
 import { format } from "date-fns";
 import { ptBR, enUS } from "date-fns/locale";
 import { CalendarIcon, CheckCircle2, Loader2, X } from "lucide-react";
@@ -19,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-const API_URL = "https://api.leadseller.com.br/v1/public/leads";
+// Routed through Lovable Cloud BFF (lead-proxy edge function) which forwards to api.leadseller.com.br
 
 // 08:00 → 20:00 BRT, 30-min slots, Sunday→Sunday (no day filter, all weekdays incl. Sun)
 const TIME_SLOTS = Array.from({ length: 25 }, (_, i) => {
@@ -55,12 +57,16 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
   const [company, setCompany] = useState("");
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>("");
+  const [hpField, setHpField] = useState(""); // honeypot — must stay empty
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const renderedAtRef = useRef<number>(Date.now());
+
+  useEffect(() => { if (open) renderedAtRef.current = Date.now(); }, [open]);
 
   const reset = () => {
     setName(""); setEmail(""); setCompany("");
-    setDate(undefined); setTime(""); setErrors({}); setStatus("idle");
+    setDate(undefined); setTime(""); setHpField(""); setErrors({}); setStatus("idle");
   };
 
   const handleClose = (o: boolean) => {
@@ -84,7 +90,6 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
 
     const payload = {
       source: "leadseller.com.br",
-      type: "demo_scheduling",
       lead: {
         full_name: result.data.name,
         corporate_email: result.data.email,
@@ -97,27 +102,20 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
         timezone_label: "BRT",
       },
       locale: i18n.language,
-      submitted_at: new Date().toISOString(),
+      hp_field: hpField,
+      rendered_at: renderedAtRef.current,
     };
 
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "X-Source": "leadseller.com.br",
-          "X-Client-Version": "portal-1.0",
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`Gateway responded ${res.status}: ${text || res.statusText}`);
+      const { data, error } = await supabase.functions.invoke("lead-proxy", { body: payload });
+      if (error) throw error;
+      if (data && (data as { error?: string }).error) {
+        throw new Error((data as { error: string }).error);
       }
+      track("demo_booked", { locale: i18n.language });
       setStatus("success");
     } catch (err) {
-      console.error("[Lead Seller] Lead submission to API Gateway failed:", err, "Payload:", payload);
+      console.error("[Lead Seller] BFF lead-proxy submission failed:", err, "Payload:", payload);
       setStatus("error");
     }
   };

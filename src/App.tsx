@@ -1,25 +1,48 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
+import Privacy from "./pages/Privacy.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { CookiePreferencesModal } from "@/components/ls/CookiePreferencesModal";
+import { initAnalytics, track } from "@/lib/analytics";
 
 const queryClient = new QueryClient();
+
+const RouteAnalytics = () => {
+  const location = useLocation();
+  useEffect(() => {
+    track("pageview", { path: location.pathname });
+  }, [location.pathname]);
+  return null;
+};
+
+const AppShell = () => {
+  useEffect(() => { initAnalytics(); }, []);
+  return (
+    <BrowserRouter>
+      <RouteAnalytics />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/privacidade" element={<Privacy />} />
+        <Route path="/privacy" element={<Privacy />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <CookiePreferencesModal />
+    </BrowserRouter>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AppShell />
     </TooltipProvider>
   </QueryClientProvider>
 );
