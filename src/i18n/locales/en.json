@@ -88,7 +88,7 @@
     "button": "Book a Demo Now"
   },
   "footer": {
-    "tagline": "Autonomous intelligence for demanding sales.",
+    "tagline": "Autonomous intelligence for sales with excellence.",
     "rights": "© 2025 Lead Seller. All rights reserved."
   },
   "modal": {
@@ -109,9 +109,18 @@
     "success_title": "Demo booked! 🎉",
     "success_desc": "Our team will confirm by email shortly.",
     "error_title": "Couldn't send",
-    "error_desc": "We saved your details locally — we'll be in touch.",
+    "error_desc": "We couldn't reach our API Gateway right now. Please try again in a moment or email contato@leadseller.com.br.",
     "validation_required": "Required field",
     "validation_email": "Invalid email"
   },
-  "lang": { "pt": "PT", "en": "EN" }
+  "lang": { "pt": "PT", "en": "EN" },
+  "cookies": {
+    "kicker": "GDPR · Privacy",
+    "title": "Your privacy comes first",
+    "description": "We use essential cookies to operate the site and analytics cookies to improve your experience. You can accept all or keep only essentials. Read more in our",
+    "policy_link": "Privacy Policy",
+    "accept_all": "Accept all",
+    "essential_only": "Essentials only",
+    "close": "Close"
+  }
 }
