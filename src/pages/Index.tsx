@@ -1,16 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { NavBar } from "@/components/ls/NavBar";
+import { SchedulingModal } from "@/components/ls/SchedulingModal";
+import { HeroSection } from "@/components/ls/sections/HeroSection";
+import { ProblemSection } from "@/components/ls/sections/ProblemSection";
+import { EcosystemSection } from "@/components/ls/sections/EcosystemSection";
+import { FunnelSection } from "@/components/ls/sections/FunnelSection";
+import { AdvantagesSection } from "@/components/ls/sections/AdvantagesSection";
+import { FinalCTASection } from "@/components/ls/sections/FinalCTASection";
+import { Footer } from "@/components/ls/Footer";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [demoOpen, setDemoOpen] = useState(false);
+  const open = () => setDemoOpen(true);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-surface">
+      <NavBar onOpenDemo={open} />
+      <main>
+        <HeroSection onOpenDemo={open} />
+        <ProblemSection />
+        <EcosystemSection />
+        <FunnelSection />
+        <AdvantagesSection />
+        <FinalCTASection onOpenDemo={open} />
+      </main>
+      <Footer />
+      <SchedulingModal open={demoOpen} onOpenChange={setDemoOpen} />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
