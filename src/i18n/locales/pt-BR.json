@@ -109,7 +109,7 @@
     "success_title": "Demo agendada! 🎉",
     "success_desc": "Nosso time confirmará por e-mail em instantes.",
     "error_title": "Não foi possível enviar",
-    "error_desc": "Recebemos seus dados localmente — entraremos em contato.",
+    "error_desc": "Não conseguimos contatar nossa Central de APIs agora. Por favor, tente novamente em instantes ou escreva para contato@leadseller.com.br.",
     "validation_required": "Campo obrigatório",
     "validation_email": "E-mail inválido"
   },

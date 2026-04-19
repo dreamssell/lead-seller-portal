@@ -103,15 +103,21 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
     try {
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "X-Source": "leadseller.com.br",
+          "X-Client-Version": "portal-1.0",
+        },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(`Gateway responded ${res.status}: ${text || res.statusText}`);
+      }
       setStatus("success");
     } catch (err) {
-      // Graceful preview fallback: still show success-like state for UX,
-      // but flag soft error so user knows we'll follow up.
-      console.warn("[Lead Seller] Lead submission to gateway failed:", err, "Payload:", payload);
+      console.error("[Lead Seller] Lead submission to API Gateway failed:", err, "Payload:", payload);
       setStatus("error");
     }
   };

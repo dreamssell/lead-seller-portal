@@ -109,7 +109,7 @@
     "success_title": "Demo booked! 🎉",
     "success_desc": "Our team will confirm by email shortly.",
     "error_title": "Couldn't send",
-    "error_desc": "We saved your details locally — we'll be in touch.",
+    "error_desc": "We couldn't reach our API Gateway right now. Please try again in a moment or email contato@leadseller.com.br.",
     "validation_required": "Required field",
     "validation_email": "Invalid email"
   },

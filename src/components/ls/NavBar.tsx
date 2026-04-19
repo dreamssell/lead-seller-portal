@@ -32,9 +32,13 @@ export const NavBar = ({ onOpenDemo }: NavBarProps) => {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2.5 group">
-          <div className="size-9 rounded-lg bg-navy flex items-center justify-center transition-transform group-hover:scale-105">
-            <div className="size-4 rounded-sm bg-cyan shadow-cyan" />
-          </div>
+          <img
+            src="/leadseller-funnel-mark.svg"
+            alt="Lead Seller"
+            className="h-9 w-auto transition-transform group-hover:scale-105"
+            width={24}
+            height={38}
+          />
           <span className="text-lg font-extrabold tracking-tighter uppercase text-navy">
             Lead Seller
           </span>
