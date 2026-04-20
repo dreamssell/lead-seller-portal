@@ -25,6 +25,7 @@ const PayloadSchema = z.object({
     full_name: z.string().trim().min(2).max(100),
     corporate_email: z.string().trim().email().max(255),
     company: z.string().trim().min(1).max(100),
+    phone: z.string().trim().min(8).max(32).optional(),
   }),
   scheduling: z.object({
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -141,6 +142,7 @@ Deno.serve(async (req: Request) => {
     full_name: forward.lead.full_name,
     corporate_email: forward.lead.corporate_email,
     company: forward.lead.company,
+    phone: forward.lead.phone ?? null,
     scheduling_date: forward.scheduling.date,
     scheduling_time: forward.scheduling.time,
     scheduling_timezone: forward.scheduling.timezone,

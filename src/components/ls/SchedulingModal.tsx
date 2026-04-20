@@ -220,6 +220,21 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
                 </div>
               </div>
 
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold uppercase tracking-wider text-navy/60">
+                  {t("modal.phone_label")}
+                </Label>
+                <Input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder={t("modal.phone_placeholder")}
+                  maxLength={32}
+                  className="h-11 border-navy/15 focus-visible:ring-cyan"
+                />
+                {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label className="text-xs font-bold uppercase tracking-wider text-navy/60">
