@@ -232,6 +232,9 @@ const Admin = () => {
           <Button variant="outline" size="sm" onClick={loadLeads} disabled={loading}>
             {loading ? "Atualizando…" : "Atualizar"}
           </Button>
+          <Button variant="outline" size="sm" onClick={handleExportCsv} disabled={filtered.length === 0}>
+            Exportar CSV
+          </Button>
           <span className="ml-auto text-sm text-muted-foreground">
             {filtered.length} {filtered.length === 1 ? "lead" : "leads"}
           </span>
