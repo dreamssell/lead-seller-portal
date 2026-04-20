@@ -125,6 +125,46 @@ const Admin = () => {
     loadLeads();
   };
 
+  const handleExportCsv = () => {
+    if (filtered.length === 0) {
+      toast({ title: "Nada para exportar", description: "Nenhum lead no filtro atual." });
+      return;
+    }
+    const headers = [
+      "created_at",
+      "request_id",
+      "full_name",
+      "corporate_email",
+      "company",
+      "phone",
+      "scheduling_date",
+      "scheduling_time",
+      "scheduling_timezone_label",
+      "upstream_ok",
+      "upstream_status",
+      "upstream_error",
+    ];
+    const escape = (v: unknown) => {
+      const s = v === null || v === undefined ? "" : String(v);
+      return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = filtered.map((l) =>
+      headers.map((h) => escape((l as unknown as Record<string, unknown>)[h])).join(",")
+    );
+    const csv = "\ufeff" + [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const ts = new Date().toISOString().replace(/[:.]/g, "-");
+    a.href = url;
+    a.download = `leads-${filter}-${ts}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({ title: "Exportação concluída", description: `${filtered.length} lead(s) exportado(s).` });
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login", { replace: true });
