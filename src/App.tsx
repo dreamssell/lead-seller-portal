@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Privacy from "./pages/Privacy.tsx";
+import Admin from "./pages/Admin.tsx";
+import AdminAuth from "./pages/AdminAuth.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { CookiePreferencesModal } from "@/components/ls/CookiePreferencesModal";
 import { initAnalytics, track } from "@/lib/analytics";
@@ -29,6 +31,8 @@ const AppShell = () => {
         <Route path="/" element={<Index />} />
         <Route path="/privacidade" element={<Privacy />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/admin/login" element={<AdminAuth />} />
+        <Route path="/admin" element={<Admin />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
