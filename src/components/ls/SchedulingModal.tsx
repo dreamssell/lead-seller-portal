@@ -48,6 +48,12 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
       .email(t("modal.validation_email"))
       .max(255),
     company: z.string().trim().min(1, t("modal.validation_required")).max(100),
+    phone: z
+      .string()
+      .trim()
+      .min(8, t("modal.validation_phone"))
+      .max(32)
+      .regex(/^[+\d][\d\s().-]{7,}$/, t("modal.validation_phone")),
     date: z.date({ required_error: t("modal.validation_required") }),
     time: z.string().min(1, t("modal.validation_required")),
   });
@@ -55,6 +61,7 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
+  const [phone, setPhone] = useState("");
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>("");
   const [hpField, setHpField] = useState(""); // honeypot — must stay empty
@@ -65,7 +72,7 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
   useEffect(() => { if (open) renderedAtRef.current = Date.now(); }, [open]);
 
   const reset = () => {
-    setName(""); setEmail(""); setCompany("");
+    setName(""); setEmail(""); setCompany(""); setPhone("");
     setDate(undefined); setTime(""); setHpField(""); setErrors({}); setStatus("idle");
   };
 
@@ -76,7 +83,7 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = schema.safeParse({ name, email, company, date, time });
+    const result = schema.safeParse({ name, email, company, phone, date, time });
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -94,6 +101,7 @@ export const SchedulingModal = ({ open, onOpenChange }: SchedulingModalProps) =>
         full_name: result.data.name,
         corporate_email: result.data.email,
         company: result.data.company,
+        phone: result.data.phone,
       },
       scheduling: {
         date: format(result.data.date, "yyyy-MM-dd"),
