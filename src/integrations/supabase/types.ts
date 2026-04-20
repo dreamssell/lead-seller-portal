@@ -23,6 +23,7 @@ export type Database = {
           id: string
           ip: string | null
           locale: string | null
+          phone: string | null
           raw_payload: Json
           request_id: string
           scheduling_date: string
@@ -43,6 +44,7 @@ export type Database = {
           id?: string
           ip?: string | null
           locale?: string | null
+          phone?: string | null
           raw_payload: Json
           request_id: string
           scheduling_date: string
@@ -63,6 +65,7 @@ export type Database = {
           id?: string
           ip?: string | null
           locale?: string | null
+          phone?: string | null
           raw_payload?: Json
           request_id?: string
           scheduling_date?: string

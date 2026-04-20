@@ -21,6 +21,7 @@ type Lead = {
   full_name: string;
   corporate_email: string;
   company: string;
+  phone: string | null;
   scheduling_date: string;
   scheduling_time: string;
   scheduling_timezone_label: string | null;
@@ -44,7 +45,6 @@ const Admin = () => {
   useEffect(() => {
     document.title = "Admin · Lead Seller";
 
-    // Set up listener FIRST (per Supabase guidance)
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
     });
@@ -71,13 +71,13 @@ const Admin = () => {
     const { data, error } = await supabase
       .from("leads")
       .select(
-        "id, request_id, full_name, corporate_email, company, scheduling_date, scheduling_time, scheduling_timezone_label, upstream_ok, upstream_status, upstream_error, created_at"
+        "id, request_id, full_name, corporate_email, company, phone, scheduling_date, scheduling_time, scheduling_timezone_label, upstream_ok, upstream_status, upstream_error, created_at"
       )
       .order("created_at", { ascending: false })
       .limit(500);
     setLoading(false);
     if (error) {
-      toast({ title: "Failed to load leads", description: error.message, variant: "destructive" });
+      toast({ title: "Falha ao carregar leads", description: error.message, variant: "destructive" });
       return;
     }
     setLeads((data ?? []) as Lead[]);
@@ -97,6 +97,7 @@ const Admin = () => {
         l.full_name.toLowerCase().includes(q) ||
         l.corporate_email.toLowerCase().includes(q) ||
         l.company.toLowerCase().includes(q) ||
+        (l.phone ?? "").toLowerCase().includes(q) ||
         l.request_id.toLowerCase().includes(q)
       );
     });
@@ -109,14 +110,14 @@ const Admin = () => {
     });
     setResending(null);
     if (error) {
-      toast({ title: "Resend failed", description: error.message, variant: "destructive" });
+      toast({ title: "Falha no reenvio", description: error.message, variant: "destructive" });
       return;
     }
     if (data?.ok) {
-      toast({ title: "Lead delivered", description: `Upstream responded ${data.status}` });
+      toast({ title: "Lead entregue", description: `API respondeu ${data.status}` });
     } else {
       toast({
-        title: "Upstream still failing",
+        title: "API ainda indisponível",
         description: data?.error ?? `Status ${data?.status}`,
         variant: "destructive",
       });
@@ -132,7 +133,7 @@ const Admin = () => {
   if (!authChecked) {
     return (
       <main className="min-h-screen flex items-center justify-center text-muted-foreground">
-        Loading…
+        Carregando…
       </main>
     );
   }
@@ -140,15 +141,15 @@ const Admin = () => {
   if (!isAdmin) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
-        <h1 className="text-2xl font-semibold">Access denied</h1>
+        <h1 className="text-2xl font-semibold">Acesso negado</h1>
         <p className="text-muted-foreground max-w-md">
-          Your account is signed in but does not have the <code>admin</code> role.
-          Ask another admin to grant it via the <code>user_roles</code> table.
+          Sua conta está autenticada, mas não possui o papel de <code>admin</code>.
+          Solicite a outro administrador que conceda esse papel na tabela <code>user_roles</code>.
         </p>
         <p className="text-xs text-muted-foreground">
-          Signed in as {session?.user.email}
+          Conectado como {session?.user.email}
         </p>
-        <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
+        <Button variant="outline" onClick={handleSignOut}>Sair</Button>
       </main>
     );
   }
@@ -158,20 +159,20 @@ const Admin = () => {
       <div className="mx-auto max-w-7xl space-y-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Lead Backup Admin</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Backup de Leads</h1>
             <p className="text-sm text-muted-foreground">
-              Inspect and re-send leads that didn't reach the upstream API gateway.
+              Inspecione e reenvie leads que não chegaram à API principal.
             </p>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>{session?.user.email}</span>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>Sign out</Button>
+            <Button variant="outline" size="sm" onClick={handleSignOut}>Sair</Button>
           </div>
         </header>
 
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            placeholder="Search name, email, company, request id…"
+            placeholder="Buscar nome, e-mail, empresa, telefone, request id…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="max-w-sm"
@@ -184,15 +185,15 @@ const Admin = () => {
                 size="sm"
                 onClick={() => setFilter(f)}
               >
-                {f === "queued" ? "Queued (failed)" : f === "ok" ? "Delivered" : "All"}
+                {f === "queued" ? "Pendentes" : f === "ok" ? "Entregues" : "Todos"}
               </Button>
             ))}
           </div>
           <Button variant="outline" size="sm" onClick={loadLeads} disabled={loading}>
-            {loading ? "Refreshing…" : "Refresh"}
+            {loading ? "Atualizando…" : "Atualizar"}
           </Button>
           <span className="ml-auto text-sm text-muted-foreground">
-            {filtered.length} lead{filtered.length === 1 ? "" : "s"}
+            {filtered.length} {filtered.length === 1 ? "lead" : "leads"}
           </span>
         </div>
 
@@ -200,26 +201,27 @@ const Admin = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Created</TableHead>
+                <TableHead>Criado em</TableHead>
                 <TableHead>Lead</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Scheduling</TableHead>
+                <TableHead>Empresa</TableHead>
+                <TableHead>Telefone</TableHead>
+                <TableHead>Agendamento</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className="text-right">Ação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-10">
-                    No leads match the current filter.
+                  <TableCell colSpan={7} className="text-center text-muted-foreground py-10">
+                    Nenhum lead encontrado para o filtro atual.
                   </TableCell>
                 </TableRow>
               )}
               {filtered.map((l) => (
                 <TableRow key={l.id}>
                   <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                    {new Date(l.created_at).toLocaleString()}
+                    {new Date(l.created_at).toLocaleString("pt-BR")}
                   </TableCell>
                   <TableCell>
                     <div className="font-medium">{l.full_name}</div>
@@ -227,16 +229,30 @@ const Admin = () => {
                   </TableCell>
                   <TableCell>{l.company}</TableCell>
                   <TableCell className="text-sm whitespace-nowrap">
+                    {l.phone ? (
+                      <a
+                        href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {l.phone}
+                      </a>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-sm whitespace-nowrap">
                     {l.scheduling_date} {l.scheduling_time}
                     {l.scheduling_timezone_label ? ` ${l.scheduling_timezone_label}` : ""}
                   </TableCell>
                   <TableCell>
                     {l.upstream_ok ? (
-                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Delivered</Badge>
+                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Entregue</Badge>
                     ) : (
                       <div className="flex flex-col gap-1">
                         <Badge variant="destructive">
-                          {l.upstream_status ? `Failed ${l.upstream_status}` : "Queued"}
+                          {l.upstream_status ? `Falhou ${l.upstream_status}` : "Pendente"}
                         </Badge>
                         {l.upstream_error && (
                           <span className="text-xs text-muted-foreground max-w-xs truncate">
@@ -253,7 +269,7 @@ const Admin = () => {
                       disabled={resending === l.id}
                       onClick={() => handleResend(l.id)}
                     >
-                      {resending === l.id ? "Sending…" : l.upstream_ok ? "Re-send" : "Retry"}
+                      {resending === l.id ? "Enviando…" : l.upstream_ok ? "Reenviar" : "Tentar novamente"}
                     </Button>
                   </TableCell>
                 </TableRow>

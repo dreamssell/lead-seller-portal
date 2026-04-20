@@ -13,7 +13,7 @@ const AdminAuth = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin Login · Lead Seller";
+    document.title = "Login Admin · Lead Seller";
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate("/admin", { replace: true });
     });
@@ -25,7 +25,7 @@ const AdminAuth = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      toast({ title: "Sign-in failed", description: error.message, variant: "destructive" });
+      toast({ title: "Falha ao entrar", description: error.message, variant: "destructive" });
       return;
     }
     navigate("/admin", { replace: true });
@@ -38,11 +38,11 @@ const AdminAuth = () => {
         className="w-full max-w-sm space-y-5 rounded-xl border border-border bg-card p-8 shadow-sm"
       >
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Admin Access</h1>
-          <p className="text-sm text-muted-foreground">Sign in with your administrator account.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Acesso Administrativo</h1>
+          <p className="text-sm text-muted-foreground">Entre com sua conta de administrador.</p>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">E-mail</Label>
           <Input
             id="email"
             type="email"
@@ -53,7 +53,7 @@ const AdminAuth = () => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input
             id="password"
             type="password"
@@ -64,7 +64,7 @@ const AdminAuth = () => {
           />
         </div>
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? "Entrando..." : "Entrar"}
         </Button>
       </form>
     </main>
