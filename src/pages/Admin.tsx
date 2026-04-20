@@ -232,7 +232,7 @@ const Admin = () => {
                   </TableCell>
                   <TableCell>
                     {l.upstream_ok ? (
-                      <Badge className="bg-emerald-600 hover:bg-emerald-600">Delivered</Badge>
+                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Delivered</Badge>
                     ) : (
                       <div className="flex flex-col gap-1">
                         <Badge variant="destructive">
