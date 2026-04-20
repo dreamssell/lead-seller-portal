@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Settings2 } from "lucide-react";
 import { openPreferences } from "@/lib/consent";
+import logoLeadSeller from "@/assets/leadseller-logo.png";
 
 export const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -11,9 +12,13 @@ export const Footer = () => {
     <footer className="bg-navy text-white py-14 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div className="flex items-center gap-3">
-          <div className="size-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-            <div className="size-4 rounded-sm bg-cyan shadow-cyan" />
-          </div>
+          <img
+            src={logoLeadSeller}
+            alt="Lead Seller"
+            className="h-10 w-auto"
+            width={40}
+            height={40}
+          />
           <div>
             <div className="font-extrabold uppercase tracking-tighter">Lead Seller</div>
             <div className="text-[11px] text-white/50">{t("footer.tagline")}</div>

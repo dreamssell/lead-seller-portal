@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ls/Button";
 import { LanguageSwitcher } from "@/components/ls/LanguageSwitcher";
 import { cn } from "@/lib/utils";
+import logoLeadSeller from "@/assets/leadseller-logo.png";
 
 const AUTH_URL = "https://acesso.leadseller.com.br/";
 
@@ -33,11 +34,11 @@ export const NavBar = ({ onOpenDemo }: NavBarProps) => {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2.5 group">
           <img
-            src="/leadseller-funnel-mark.svg"
+            src={logoLeadSeller}
             alt="Lead Seller"
-            className="h-9 w-auto transition-transform group-hover:scale-105"
-            width={24}
-            height={38}
+            className="h-10 w-auto transition-transform group-hover:scale-105"
+            width={40}
+            height={40}
           />
           <span className="text-lg font-extrabold tracking-tighter uppercase text-navy">
             Lead Seller
