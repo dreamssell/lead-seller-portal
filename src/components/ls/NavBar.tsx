@@ -40,7 +40,7 @@ export const NavBar = ({ onOpenDemo }: NavBarProps) => {
             width={40}
             height={40}
           />
-          <span className="text-lg font-extrabold tracking-tighter uppercase text-navy">
+          <span className="hidden md:inline text-lg font-extrabold tracking-tighter uppercase text-navy">
             Lead Seller
           </span>
         </a>
