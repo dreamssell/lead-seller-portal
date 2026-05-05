@@ -11,6 +11,7 @@ import AdminAuth from "./pages/AdminAuth.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { CookiePreferencesModal } from "@/components/ls/CookiePreferencesModal";
 import { initAnalytics, track } from "@/lib/analytics";
+import { CompanyBrandingProvider } from "@/hooks/use-company-branding";
 
 const queryClient = new QueryClient();
 
@@ -44,9 +45,11 @@ const AppShell = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AppShell />
+      <CompanyBrandingProvider>
+        <Toaster />
+        <Sonner />
+        <AppShell />
+      </CompanyBrandingProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
