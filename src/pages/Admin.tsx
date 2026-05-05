@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AdminSettings } from "@/components/admin/AdminSettings";
 
 type Lead = {
   id: string;
@@ -210,116 +212,129 @@ const Admin = () => {
           </div>
         </header>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
-            placeholder="Buscar nome, e-mail, empresa, telefone, request id…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="max-w-sm"
-          />
-          <div className="flex gap-1">
-            {(["queued", "ok", "all"] as const).map((f) => (
-              <Button
-                key={f}
-                variant={filter === f ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilter(f)}
-              >
-                {f === "queued" ? "Pendentes" : f === "ok" ? "Entregues" : "Todos"}
-              </Button>
-            ))}
-          </div>
-          <Button variant="outline" size="sm" onClick={loadLeads} disabled={loading}>
-            {loading ? "Atualizando…" : "Atualizar"}
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleExportCsv} disabled={filtered.length === 0}>
-            Exportar CSV
-          </Button>
-          <span className="ml-auto text-sm text-muted-foreground">
-            {filtered.length} {filtered.length === 1 ? "lead" : "leads"}
-          </span>
-        </div>
+        <Tabs defaultValue="leads" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="leads">Leads</TabsTrigger>
+            <TabsTrigger value="settings">Configurações</TabsTrigger>
+          </TabsList>
 
-        <div className="rounded-lg border border-border overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Criado em</TableHead>
-                <TableHead>Lead</TableHead>
-                <TableHead>Empresa</TableHead>
-                <TableHead>Telefone</TableHead>
-                <TableHead>Agendamento</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Ação</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center text-muted-foreground py-10">
-                    Nenhum lead encontrado para o filtro atual.
-                  </TableCell>
-                </TableRow>
-              )}
-              {filtered.map((l) => (
-                <TableRow key={l.id}>
-                  <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                    {new Date(l.created_at).toLocaleString("pt-BR")}
-                  </TableCell>
-                  <TableCell>
-                    <div className="font-medium">{l.full_name}</div>
-                    <div className="text-xs text-muted-foreground">{l.corporate_email}</div>
-                  </TableCell>
-                  <TableCell>{l.company}</TableCell>
-                  <TableCell className="text-sm whitespace-nowrap">
-                    {l.phone ? (
-                      <a
-                        href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        {l.phone}
-                      </a>
-                    ) : (
-                      <span className="text-muted-foreground">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-sm whitespace-nowrap">
-                    {l.scheduling_date} {l.scheduling_time}
-                    {l.scheduling_timezone_label ? ` ${l.scheduling_timezone_label}` : ""}
-                  </TableCell>
-                  <TableCell>
-                    {l.upstream_ok ? (
-                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Entregue</Badge>
-                    ) : (
-                      <div className="flex flex-col gap-1">
-                        <Badge variant="destructive">
-                          {l.upstream_status ? `Falhou ${l.upstream_status}` : "Pendente"}
-                        </Badge>
-                        {l.upstream_error && (
-                          <span className="text-xs text-muted-foreground max-w-xs truncate">
-                            {l.upstream_error}
-                          </span>
+          <TabsContent value="leads" className="space-y-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <Input
+                placeholder="Buscar nome, e-mail, empresa, telefone, request id…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="max-w-sm"
+              />
+              <div className="flex gap-1">
+                {(["queued", "ok", "all"] as const).map((f) => (
+                  <Button
+                    key={f}
+                    variant={filter === f ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setFilter(f)}
+                  >
+                    {f === "queued" ? "Pendentes" : f === "ok" ? "Entregues" : "Todos"}
+                  </Button>
+                ))}
+              </div>
+              <Button variant="outline" size="sm" onClick={loadLeads} disabled={loading}>
+                {loading ? "Atualizando…" : "Atualizar"}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleExportCsv} disabled={filtered.length === 0}>
+                Exportar CSV
+              </Button>
+              <span className="ml-auto text-sm text-muted-foreground">
+                {filtered.length} {filtered.length === 1 ? "lead" : "leads"}
+              </span>
+            </div>
+
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Criado em</TableHead>
+                    <TableHead>Lead</TableHead>
+                    <TableHead>Empresa</TableHead>
+                    <TableHead>Telefone</TableHead>
+                    <TableHead>Agendamento</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Ação</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center text-muted-foreground py-10">
+                        Nenhum lead encontrado para o filtro atual.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {filtered.map((l) => (
+                    <TableRow key={l.id}>
+                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                        {new Date(l.created_at).toLocaleString("pt-BR")}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{l.full_name}</div>
+                        <div className="text-xs text-muted-foreground">{l.corporate_email}</div>
+                      </TableCell>
+                      <TableCell>{l.company}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">
+                        {l.phone ? (
+                          <a
+                            href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-primary hover:underline"
+                          >
+                            {l.phone}
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
                         )}
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      size="sm"
-                      variant={l.upstream_ok ? "outline" : "default"}
-                      disabled={resending === l.id}
-                      onClick={() => handleResend(l.id)}
-                    >
-                      {resending === l.id ? "Enviando…" : l.upstream_ok ? "Reenviar" : "Tentar novamente"}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+                      </TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">
+                        {l.scheduling_date} {l.scheduling_time}
+                        {l.scheduling_timezone_label ? ` ${l.scheduling_timezone_label}` : ""}
+                      </TableCell>
+                      <TableCell>
+                        {l.upstream_ok ? (
+                          <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">Entregue</Badge>
+                        ) : (
+                          <div className="flex flex-col gap-1">
+                            <Badge variant="destructive">
+                              {l.upstream_status ? `Falhou ${l.upstream_status}` : "Pendente"}
+                            </Badge>
+                            {l.upstream_error && (
+                              <span className="text-xs text-muted-foreground max-w-xs truncate">
+                                {l.upstream_error}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          size="sm"
+                          variant={l.upstream_ok ? "outline" : "default"}
+                          disabled={resending === l.id}
+                          onClick={() => handleResend(l.id)}
+                        >
+                          {resending === l.id ? "Enviando…" : l.upstream_ok ? "Reenviar" : "Tentar novamente"}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings">
+            {session && <AdminSettings userId={session.user.id} userEmail={session.user.email ?? ""} />}
+          </TabsContent>
+        </Tabs>
       </div>
     </main>
   );
