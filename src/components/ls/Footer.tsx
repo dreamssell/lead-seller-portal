@@ -2,25 +2,20 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Settings2 } from "lucide-react";
 import { openPreferences } from "@/lib/consent";
-import logoLeadSeller from "@/assets/leadseller-logo.png";
+import { useCompanyBranding } from "@/hooks/use-company-branding";
 
 export const Footer = () => {
   const { t, i18n } = useTranslation();
+  const { name, logoUrl } = useCompanyBranding();
   const privacyHref = i18n.language.startsWith("en") ? "/privacy" : "/privacidade";
 
   return (
     <footer className="bg-navy text-white py-14 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div className="flex items-center gap-3">
-          <img
-            src={logoLeadSeller}
-            alt="Lead Seller"
-            className="h-10 w-auto"
-            width={40}
-            height={40}
-          />
+          <img src={logoUrl} alt={name} className="h-10 w-auto" />
           <div>
-            <div className="font-extrabold uppercase tracking-tighter">Lead Seller</div>
+            <div className="font-extrabold uppercase tracking-tighter">{name}</div>
             <div className="text-[11px] text-white/50">{t("footer.tagline")}</div>
           </div>
         </div>
