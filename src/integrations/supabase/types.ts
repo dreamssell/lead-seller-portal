@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      company_settings: {
+        Row: {
+          id: number
+          logo_url: string | null
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          logo_url?: string | null
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          logo_url?: string | null
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           company: string
@@ -80,6 +101,30 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -112,6 +157,20 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      list_admins: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          created_at: string
+          display_name: string
+          email: string
+          user_id: string
+        }[]
+      }
+      set_admin_role_by_email: {
+        Args: { _email: string; _grant: boolean }
+        Returns: string
       }
     }
     Enums: {
