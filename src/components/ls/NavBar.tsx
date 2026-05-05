@@ -26,8 +26,7 @@ export const NavBar = ({ onOpenDemo }: NavBarProps) => {
   }, []);
 
   return (
-    <>
-      <nav
+    <nav
         className={cn(
           "fixed top-0 z-50 w-full border-b transition-all duration-300",
           scrolled
@@ -96,9 +95,6 @@ export const NavBar = ({ onOpenDemo }: NavBarProps) => {
             </div>
           </div>
         )}
-      </nav>
-      {/* Spacer to prevent fixed nav from overlaying content */}
-      <div aria-hidden className="h-14 md:h-20" />
-    </>
+    </nav>
   );
 };
