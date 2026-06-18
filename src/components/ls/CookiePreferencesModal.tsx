@@ -61,6 +61,10 @@ export const CookiePreferencesModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-lg w-[calc(100vw-2rem)] p-0 gap-0 border-0 bg-transparent shadow-none max-h-[calc(100vh-2rem)] sm:max-h-[90vh]">
+        <VisuallyHidden>
+          <DialogTitle>{t("preferences.title")}</DialogTitle>
+          <DialogDescription>{t("preferences.subtitle")}</DialogDescription>
+        </VisuallyHidden>
         <div className="relative flex flex-col max-h-[inherit] rounded-2xl bg-white shadow-navy-soft overflow-hidden border border-navy/10">
           <button
             onClick={() => setOpen(false)}
