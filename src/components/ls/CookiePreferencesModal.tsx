@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Shield, BarChart3, Megaphone, X } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ls/Button";
 import { getConsent, setConsent, acceptAll, rejectNonEssential, OPEN_PREFERENCES_EVENT } from "@/lib/consent";
