@@ -32,11 +32,17 @@ export const CookieConsent = () => {
       aria-live="polite"
       aria-label={t("cookies.title")}
       className={cn(
-        "fixed inset-x-4 bottom-4 z-[60] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md",
+        "fixed inset-x-0 bottom-0 z-[60] px-4 pb-4 sm:px-6 sm:pb-6",
         "animate-in fade-in slide-in-from-bottom-4 duration-500"
       )}
     >
-      <div className="relative rounded-2xl border border-navy/10 bg-white/95 backdrop-blur-xl shadow-navy-soft p-5 sm:p-6">
+      <div
+        className={cn(
+          "relative mx-auto w-full max-w-3xl",
+          "rounded-2xl border border-navy/10 bg-white/95 backdrop-blur-xl shadow-navy-soft",
+          "p-5 sm:p-6 pr-10 sm:pr-12"
+        )}
+      >
         <button
           onClick={() => close("essential")}
           aria-label={t("cookies.close")}
@@ -45,16 +51,19 @@ export const CookieConsent = () => {
           <X className="size-4" />
         </button>
 
-        <div className="flex items-start gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
           <div className="size-10 rounded-xl bg-cyan/10 text-cyan flex items-center justify-center shrink-0">
             <Cookie className="size-5" />
           </div>
+
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-cyan mb-1">
               {t("cookies.kicker")}
             </div>
-            <h3 className="text-sm font-extrabold text-navy">{t("cookies.title")}</h3>
-            <p className="mt-1.5 text-xs leading-relaxed text-navy/65">
+            <h3 className="text-sm sm:text-base font-extrabold text-navy">
+              {t("cookies.title")}
+            </h3>
+            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-navy/65 break-words">
               {t("cookies.description")}{" "}
               <Link
                 to={privacyHref}
@@ -64,24 +73,24 @@ export const CookieConsent = () => {
               </Link>
               .
             </p>
-          </div>
-        </div>
 
-        <div className="mt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
-          <button
-            type="button"
-            onClick={() => { setVisible(false); openPreferences(); }}
-            className="inline-flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy/60 hover:text-cyan transition-colors px-2 py-2"
-          >
-            <Settings2 className="size-3.5" />
-            {t("cookies.preferences")}
-          </button>
-          <Button variant="secondary" size="sm" onClick={() => close("essential")}>
-            {t("cookies.essential_only")}
-          </Button>
-          <Button variant="primary" size="sm" onClick={() => close("accept")}>
-            {t("cookies.accept_all")}
-          </Button>
+            <div className="mt-5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:justify-end">
+              <button
+                type="button"
+                onClick={() => { setVisible(false); openPreferences(); }}
+                className="order-last sm:order-none inline-flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy/60 hover:text-cyan transition-colors px-3 py-2 sm:mr-auto"
+              >
+                <Settings2 className="size-3.5" />
+                {t("cookies.preferences")}
+              </button>
+              <Button variant="secondary" size="sm" onClick={() => close("essential")} className="w-full sm:w-auto justify-center">
+                {t("cookies.essential_only")}
+              </Button>
+              <Button variant="primary" size="sm" onClick={() => close("accept")} className="w-full sm:w-auto justify-center">
+                {t("cookies.accept_all")}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
