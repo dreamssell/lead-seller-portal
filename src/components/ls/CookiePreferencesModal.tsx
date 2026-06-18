@@ -101,18 +101,16 @@ export const CookiePreferencesModal = () => {
             />
           </div>
 
-          <div className="p-5 pt-2 border-t border-navy/10 bg-navy/[0.02] flex flex-col-reverse sm:flex-row gap-2 sm:justify-between sm:items-center">
-            <Button variant="secondary" size="sm" onClick={rejectClick}>
+          <div className="p-4 sm:p-5 border-t border-navy/10 bg-navy/[0.02] grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Button variant="secondary" size="sm" onClick={rejectClick} className="w-full justify-center">
               {t("preferences.reject_all")}
             </Button>
-            <div className="flex flex-col-reverse sm:flex-row gap-2">
-              <Button variant="dark" size="sm" onClick={save}>
-                {t("preferences.save")}
-              </Button>
-              <Button variant="primary" size="sm" onClick={acceptAllClick}>
-                {t("preferences.accept_all")}
-              </Button>
-            </div>
+            <Button variant="dark" size="sm" onClick={save} className="w-full justify-center">
+              {t("preferences.save")}
+            </Button>
+            <Button variant="primary" size="sm" onClick={acceptAllClick} className="w-full justify-center">
+              {t("preferences.accept_all")}
+            </Button>
           </div>
         </div>
       </DialogContent>
