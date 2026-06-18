@@ -38,9 +38,9 @@ export const CookieConsent = () => {
     >
       <div
         className={cn(
-          "relative mx-auto w-full max-w-3xl",
+          "relative mx-auto w-full max-w-2xl overflow-hidden",
           "rounded-2xl border border-navy/10 bg-white/95 backdrop-blur-xl shadow-navy-soft",
-          "p-5 sm:p-6 pr-10 sm:pr-12"
+          "p-5 sm:p-6"
         )}
       >
         <button
@@ -51,46 +51,59 @@ export const CookieConsent = () => {
           <X className="size-4" />
         </button>
 
-        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        {/* Header */}
+        <div className="flex items-start gap-3 pr-8">
           <div className="size-10 rounded-xl bg-cyan/10 text-cyan flex items-center justify-center shrink-0">
             <Cookie className="size-5" />
           </div>
-
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-cyan mb-1">
               {t("cookies.kicker")}
             </div>
-            <h3 className="text-sm sm:text-base font-extrabold text-navy">
+            <h3 className="text-sm sm:text-base font-extrabold text-navy leading-tight">
               {t("cookies.title")}
             </h3>
-            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-navy/65 break-words">
-              {t("cookies.description")}{" "}
-              <Link
-                to={privacyHref}
-                className="font-semibold text-navy underline decoration-cyan/60 underline-offset-2 hover:decoration-cyan"
-              >
-                {t("cookies.policy_link")}
-              </Link>
-              .
-            </p>
-
-            <div className="mt-5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:justify-end">
-              <button
-                type="button"
-                onClick={() => { setVisible(false); openPreferences(); }}
-                className="order-last sm:order-none inline-flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy/60 hover:text-cyan transition-colors px-3 py-2 sm:mr-auto"
-              >
-                <Settings2 className="size-3.5" />
-                {t("cookies.preferences")}
-              </button>
-              <Button variant="secondary" size="sm" onClick={() => close("essential")} className="w-full sm:w-auto justify-center">
-                {t("cookies.essential_only")}
-              </Button>
-              <Button variant="primary" size="sm" onClick={() => close("accept")} className="w-full sm:w-auto justify-center">
-                {t("cookies.accept_all")}
-              </Button>
-            </div>
           </div>
+        </div>
+
+        {/* Body */}
+        <p className="mt-3 text-xs sm:text-sm leading-relaxed text-navy/65 break-words [hyphens:auto]">
+          {t("cookies.description")}{" "}
+          <Link
+            to={privacyHref}
+            className="font-semibold text-navy underline decoration-cyan/60 underline-offset-2 hover:decoration-cyan"
+          >
+            {t("cookies.policy_link")}
+          </Link>
+          .
+        </p>
+
+        {/* Actions */}
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <button
+            type="button"
+            onClick={() => { setVisible(false); openPreferences(); }}
+            className="order-last sm:order-none inline-flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wider text-navy/60 hover:text-cyan transition-colors px-3 py-2 sm:mr-auto"
+          >
+            <Settings2 className="size-3.5" />
+            {t("cookies.preferences")}
+          </button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => close("essential")}
+            className="w-full sm:w-auto justify-center"
+          >
+            {t("cookies.essential_only")}
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => close("accept")}
+            className="w-full sm:w-auto justify-center"
+          >
+            {t("cookies.accept_all")}
+          </Button>
         </div>
       </div>
     </div>

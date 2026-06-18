@@ -121,9 +121,9 @@
   },
   "lang": { "pt": "PT", "en": "EN" },
   "cookies": {
-    "kicker": "GDPR · Privacy",
-    "title": "Your privacy comes first",
-    "description": "We use essential cookies to operate the site, and analytics/marketing cookies to improve your experience. You decide. Read more in our",
+    "kicker": "Privacy · LGPD / GDPR",
+    "title": "We respect your privacy",
+    "description": "Lead Seller uses essential cookies to operate the site and, with your consent, analytics and marketing cookies to improve your experience. You choose which categories to allow and can change it anytime. Learn more in our",
     "policy_link": "Privacy Policy",
     "accept_all": "Accept all",
     "essential_only": "Essentials only",
