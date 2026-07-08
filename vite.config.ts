@@ -32,18 +32,12 @@ export default defineConfig(({ mode }) => ({
           args: ["--no-sandbox", "--disable-setuid-sandbox"],
         },
         // Mantém o index.html original também: cada rota gera <route>/index.html
-        postProcess(renderedRoute: {
-          route: string;
-          html: string;
-          originalRoute: string;
-        }) {
-          // Garante <html lang="..."> correto no snapshot
+        postProcess(renderedRoute: { route: string; html: string }) {
           const isEn = renderedRoute.route.startsWith("/en");
           renderedRoute.html = renderedRoute.html.replace(
             /<html[^>]*>/,
             `<html lang="${isEn ? "en" : "pt-BR"}">`,
           );
-          return renderedRoute;
         },
       }),
   ].filter(Boolean),
