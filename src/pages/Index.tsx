@@ -62,7 +62,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-surface">
-      <SEO path="/" title={title} description={description} jsonLd={jsonLd} />
+      <SEO path={path} ptPath="/" enPath="/en" title={title} description={description} jsonLd={jsonLd} />
       <NavBar onOpenDemo={open} />
       <main>
         <HeroSection onOpenDemo={open} />
