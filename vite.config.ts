@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
           // Aguarda o Helmet mutar o <head> antes de serializar
           renderAfterTime: 1500,
           maxConcurrentRoutes: 2,
-          headless: "new",
+          headless: true,
           args: ["--no-sandbox", "--disable-setuid-sandbox"],
         },
         // Mantém o index.html original também: cada rota gera <route>/index.html
