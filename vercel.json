@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!en|privacidade|privacy|admin|assets|__l5e|favicon.png|robots.txt|sitemap.xml|.*\\..*).*)", "destination": "/index.html" }
   ]
 }

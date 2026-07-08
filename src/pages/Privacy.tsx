@@ -10,7 +10,7 @@ import { openPreferences } from "@/lib/consent";
 const Privacy = () => {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language?.startsWith("en");
-  const path = isEn ? "/privacy" : "/privacidade";
+  const path = isEn ? "/en/privacy" : "/privacidade";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -31,7 +31,7 @@ const Privacy = () => {
       <SEO
         path={path}
         ptPath="/privacidade"
-        enPath="/privacy"
+        enPath="/en/privacy"
         title={t("privacy.meta_title")}
         description={t("privacy.meta_description")}
         jsonLd={jsonLd}

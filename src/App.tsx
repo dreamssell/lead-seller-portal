@@ -10,6 +10,7 @@ import Admin from "./pages/Admin.tsx";
 import AdminAuth from "./pages/AdminAuth.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { CookiePreferencesModal } from "@/components/ls/CookiePreferencesModal";
+import { LocaleRoute } from "@/components/ls/LocaleRoute";
 import { initAnalytics, track } from "@/lib/analytics";
 import { CompanyBrandingProvider } from "@/hooks/use-company-branding";
 
@@ -29,9 +30,11 @@ const AppShell = () => {
     <BrowserRouter>
       <RouteAnalytics />
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/privacidade" element={<Privacy />} />
-        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/" element={<LocaleRoute lang="pt-BR"><Index /></LocaleRoute>} />
+        <Route path="/privacidade" element={<LocaleRoute lang="pt-BR"><Privacy /></LocaleRoute>} />
+        <Route path="/en" element={<LocaleRoute lang="en"><Index /></LocaleRoute>} />
+        <Route path="/en/privacy" element={<LocaleRoute lang="en"><Privacy /></LocaleRoute>} />
+        <Route path="/privacy" element={<LocaleRoute lang="en"><Privacy /></LocaleRoute>} />
         <Route path="/admin/login" element={<AdminAuth />} />
         <Route path="/admin" element={<Admin />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
