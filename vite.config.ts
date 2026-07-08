@@ -34,10 +34,22 @@ export default defineConfig(({ mode }) => ({
         // Mantém o index.html original também: cada rota gera <route>/index.html
         postProcess(renderedRoute: { route: string; html: string }) {
           const isEn = renderedRoute.route.startsWith("/en");
-          renderedRoute.html = renderedRoute.html.replace(
+          let html = renderedRoute.html.replace(
             /<html[^>]*>/,
             `<html lang="${isEn ? "en" : "pt-BR"}">`,
           );
+          // Remove tags estáticas do index.html que duplicariam as tags
+          // injetadas pelo Helmet (crawlers usam a primeira ocorrência).
+          // Mantemos apenas as versões com data-rh="true".
+          html = html.replace(
+            /<(title|meta|link|script)\b(?![^>]*\bdata-rh=)[^>]*?(?:name|property|rel|type)="(og:[^"]+|twitter:[^"]+|description|canonical|alternate|application\/ld\+json)"[^>]*>(?:[\s\S]*?<\/\1>)?/gi,
+            "",
+          );
+          html = html.replace(
+            /<title\b(?![^>]*\bdata-rh=)[^>]*>[\s\S]*?<\/title>/i,
+            "",
+          );
+          renderedRoute.html = html;
         },
       }),
   ].filter(Boolean),
