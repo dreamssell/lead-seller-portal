@@ -17,6 +17,7 @@ const Index = () => {
   const { i18n } = useTranslation();
   const open = () => setDemoOpen(true);
   const isEn = i18n.language?.startsWith("en");
+  const path = isEn ? "/en" : "/";
 
   const title = isEn
     ? "Lead Seller — Enterprise CRM with Autonomous AI"
