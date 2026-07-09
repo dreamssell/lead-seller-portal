@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 const SITE_URL = "https://leadseller.com.br";
 const OG_IMAGE = `${SITE_URL}/__l5e/assets-v1/78b0219d-e100-45bb-8ef8-39730e576b8a/social-1781449981696-Graph.webp`;
+const TWITTER_IMAGE = "https://storage.googleapis.com/gpt-engineer-file-uploads/2632bWEu14e3QMqonYeml4XFSqr2/social-images/social-1781449981696-Graph.webp";
 const OG_IMAGE_WIDTH = "1200";
 const OG_IMAGE_HEIGHT = "630";
 const OG_IMAGE_TYPE = "image/webp";
@@ -92,7 +93,7 @@ export const SEO = ({
       <meta name="twitter:url" content={canonical} />
       {title && <meta name="twitter:title" content={title} />}
       {description && <meta name="twitter:description" content={description} />}
-      <meta name="twitter:image" content={socialImage} />
+      <meta name="twitter:image" content={TWITTER_IMAGE} />
       <meta name="twitter:image:alt" content={socialImageAlt} />
 
       {jsonLd && (
