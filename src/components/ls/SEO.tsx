@@ -93,7 +93,7 @@ export const SEO = ({
       <meta name="twitter:url" content={canonical} />
       {title && <meta name="twitter:title" content={title} />}
       {description && <meta name="twitter:description" content={description} />}
-      <meta name="twitter:image" content={socialImage} />
+      <meta name="twitter:image" content={TWITTER_IMAGE} />
       <meta name="twitter:image:alt" content={socialImageAlt} />
 
       {jsonLd && (
